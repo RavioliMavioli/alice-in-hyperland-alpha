@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://caexqot86tvby"]
+
+[sub_resource type="Gradient" id="Gradient_xmkhn"]
+offsets = PackedFloat32Array(0, 0.287918, 0.781491, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 0.707172, 0.95344, 1, 1, 0.705882, 0.952941, 1, 0)
+
+[node name="AirParticles" type="CPUParticles2D"]
+position = Vector2(512, 288)
+amount = 128
+lifetime = 3.0
+preprocess = 10.0
+speed_scale = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(1024, 576)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 32.0
+initial_velocity_max = 64.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+linear_accel_min = -32.11
+linear_accel_max = 26.6
+radial_accel_min = -26.72
+radial_accel_max = 22.94
+angle_min = -151.9
+angle_max = 132.1
+scale_amount_max = 3.0
+color_ramp = SubResource("Gradient_xmkhn")
+hue_variation_min = -0.12
+hue_variation_max = 0.15

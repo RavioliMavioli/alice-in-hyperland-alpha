@@ -1,0 +1,204 @@
+[gd_scene load_steps=16 format=3 uid="uid://65lu22pamprs"]
+
+[ext_resource type="Script" path="res://scripts/components/players/player.gd" id="1_x0r0g"]
+[ext_resource type="Texture2D" uid="uid://bb51v54arcfhp" path="res://shaders/vfx/bulb.tres" id="2_84lfk"]
+[ext_resource type="PackedScene" uid="uid://drsa77t6ny5wy" path="res://scripts/components/players/characters/alice/model.tscn" id="2_j6ybs"]
+[ext_resource type="Script" path="res://scripts/components/players/states/state_manager.gd" id="3_5qs7i"]
+[ext_resource type="Script" path="res://scripts/components/players/controls/movement.gd" id="3_tnwmd"]
+[ext_resource type="Script" path="res://scripts/components/players/animations/animation_manager.gd" id="4_ogkbs"]
+[ext_resource type="Script" path="res://scripts/components/players/controls/platform.gd" id="4_s6hat"]
+[ext_resource type="Script" path="res://scripts/components/players/controls/jump.gd" id="5_8ealh"]
+[ext_resource type="AudioStream" uid="uid://5me8kdu31lxi" path="res://resources/audio/sfx/jump.wav" id="7_jlcw5"]
+[ext_resource type="AudioStream" uid="uid://buypl662ct1d2" path="res://resources/audio/sfx/08_Step_rock_02.wav" id="7_x24t6"]
+[ext_resource type="AudioStream" uid="uid://odxe7wd54l2k" path="res://resources/audio/sfx/land.wav" id="11_ol2ss"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1g4pl"]
+size = Vector2(14, 41)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vi85d"]
+size = Vector2(14, 3)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_08t6q"]
+size = Vector2(50, 70.9375)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8mo6v"]
+size = Vector2(64, 40)
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_x0r0g")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+scale = Vector2(2, 2)
+color = Color(0.823529, 1, 1, 1)
+energy = 2.0
+blend_mode = 2
+range_layer_min = -2
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 1.0
+texture = ExtResource("2_84lfk")
+texture_scale = 5.0
+
+[node name="Model" parent="." instance=ExtResource("2_j6ybs")]
+unique_name_in_owner = true
+
+[node name="AimCenter" type="Marker2D" parent="."]
+unique_name_in_owner = true
+
+[node name="BulletSpawn" type="Marker2D" parent="AimCenter"]
+unique_name_in_owner = true
+position = Vector2(33, 0)
+
+[node name="MainCollision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4.5)
+shape = SubResource("RectangleShape2D_1g4pl")
+
+[node name="Animation" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_ogkbs")
+
+[node name="HandsCont" type="Marker2D" parent="Animation"]
+unique_name_in_owner = true
+position = Vector2(-4, -1)
+
+[node name="Hands" type="Sprite2D" parent="Animation/HandsCont"]
+unique_name_in_owner = true
+offset = Vector2(13, 5)
+
+[node name="State" type="Node2D" parent="."]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("3_5qs7i")
+
+[node name="Ket" type="Label" parent="State"]
+modulate = Color(1, 1, 1, 0.556863)
+offset_left = 35.0
+offset_top = -3.0
+offset_right = 136.0
+offset_bottom = 150.0
+text = "State	:
+Facing:
+Head:
+Flip:
+Fire:"
+
+[node name="CharState" type="Label" parent="State"]
+offset_left = 106.0
+offset_top = -3.0
+offset_right = 207.0
+offset_bottom = 66.0
+text = "forward"
+
+[node name="CharFacing" type="Label" parent="State"]
+offset_left = 107.0
+offset_top = 23.0
+offset_right = 208.0
+offset_bottom = 92.0
+text = "backward"
+
+[node name="CharHead" type="Label" parent="State"]
+offset_left = 107.0
+offset_top = 49.0
+offset_right = 208.0
+offset_bottom = 118.0
+text = "up"
+
+[node name="CharFlip" type="Label" parent="State"]
+offset_left = 107.0
+offset_top = 75.0
+offset_right = 208.0
+offset_bottom = 144.0
+text = "up"
+
+[node name="CharFire" type="Label" parent="State"]
+offset_left = 107.0
+offset_top = 101.0
+offset_right = 208.0
+offset_bottom = 170.0
+text = "up"
+
+[node name="Ket2" type="Label" parent="State"]
+modulate = Color(1, 1, 1, 0.556863)
+offset_left = -219.0
+offset_top = 27.0
+offset_right = -118.0
+offset_bottom = 180.0
+text = "Velocity:
+GlobalPos:"
+
+[node name="Velocity" type="Label" parent="State"]
+offset_left = -127.0
+offset_top = 27.0
+offset_right = -26.0
+offset_bottom = 96.0
+text = "forward"
+
+[node name="GlobalPos" type="Label" parent="State"]
+offset_left = -127.0
+offset_top = 53.0
+offset_right = -26.0
+offset_bottom = 122.0
+text = "forward"
+
+[node name="Colliders" type="Node2D" parent="."]
+
+[node name="PlatformCheck" type="Area2D" parent="Colliders"]
+unique_name_in_owner = true
+position = Vector2(0, 25)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Colliders/PlatformCheck"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_vi85d")
+debug_color = Color(0.704279, 0.451509, 0.514932, 0.42)
+
+[node name="GroundClearance" type="Area2D" parent="Colliders"]
+unique_name_in_owner = true
+modulate = Color(1, 0.0705882, 0.498039, 0.615686)
+position = Vector2(0, 25)
+collision_layer = 0
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Colliders/GroundClearance"]
+position = Vector2(0, 35.5312)
+shape = SubResource("RectangleShape2D_08t6q")
+
+[node name="Controls" type="Node2D" parent="."]
+
+[node name="PlayerMovementControls" type="Node2D" parent="Controls"]
+unique_name_in_owner = true
+script = ExtResource("3_tnwmd")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Controls/PlayerMovementControls"]
+stream = ExtResource("7_x24t6")
+max_polyphony = 5
+
+[node name="PlayerPlatformControls" type="Node2D" parent="Controls"]
+unique_name_in_owner = true
+script = ExtResource("4_s6hat")
+
+[node name="PlayerJumpControls" type="Node2D" parent="Controls"]
+unique_name_in_owner = true
+position = Vector2(0, 25)
+script = ExtResource("5_8ealh")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Controls/PlayerJumpControls"]
+stream = ExtResource("7_jlcw5")
+max_polyphony = 5
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Controls/PlayerJumpControls"]
+stream = ExtResource("11_ol2ss")
+volume_db = -8.0
+max_polyphony = 5
+
+[node name="Lever" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lever"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_8mo6v")

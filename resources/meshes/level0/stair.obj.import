@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://4g0mufdo52iv"
+path="res://.godot/imported/stair.obj-f1c3acc13f3f7c1ddeaf3a115ca69c28.mesh"
+
+[deps]
+
+files=["res://.godot/imported/stair.obj-f1c3acc13f3f7c1ddeaf3a115ca69c28.mesh"]
+
+source_file="res://resources/meshes/level0/stair.obj"
+dest_files=["res://.godot/imported/stair.obj-f1c3acc13f3f7c1ddeaf3a115ca69c28.mesh", "res://.godot/imported/stair.obj-f1c3acc13f3f7c1ddeaf3a115ca69c28.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

@@ -1,0 +1,71 @@
+[gd_scene load_steps=9 format=3 uid="uid://chjax4mclac7v"]
+
+[ext_resource type="Script" path="res://test/node_3d.gd" id="1_2pnr2"]
+[ext_resource type="Script" path="res://scripts/coreutils/hyperplane/hyperplane.gd" id="2_4y80m"]
+[ext_resource type="Script" path="res://scripts/coreutils/mesh_pair/mesh_pair.gd" id="2_u2pkh"]
+[ext_resource type="Script" path="res://test/mesh_builder.gd" id="3_tdind"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_1p6nk"]
+size = Vector3(6.79, 1, 1)
+subdivide_width = 32
+subdivide_height = 32
+subdivide_depth = 32
+
+[sub_resource type="SphereMesh" id="SphereMesh_shd56"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dv7wu"]
+size = Vector3(15, 1, 7)
+subdivide_width = 32
+subdivide_height = 32
+subdivide_depth = 32
+
+[sub_resource type="QuadMesh" id="QuadMesh_2cnfk"]
+size = Vector2(2, 3)
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_2pnr2")
+
+[node name="Meshes" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Dynamic" type="Node3D" parent="Meshes"]
+unique_name_in_owner = true
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="Meshes/Dynamic"]
+transform = Transform3D(0.265165, 0, 0.265165, 0, 0.375, 0, -0.265165, 0, 0.265165, -1.31804, -0.0906324, 0)
+transparency = 0.5
+mesh = SubResource("BoxMesh_1p6nk")
+skeleton = NodePath("../../..")
+script = ExtResource("2_u2pkh")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="Meshes/Dynamic"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transparency = 0.5
+mesh = SubResource("SphereMesh_shd56")
+skeleton = NodePath("../../..")
+script = ExtResource("2_u2pkh")
+
+[node name="Static" type="Node3D" parent="Meshes"]
+unique_name_in_owner = true
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="Meshes/Static"]
+transform = Transform3D(0.375, 0, 7.45058e-08, 0, 0.375, 0, 8.9407e-08, 0, 0.375, 0, -1, 0)
+transparency = 0.5
+mesh = SubResource("BoxMesh_dv7wu")
+skeleton = NodePath("../../..")
+script = ExtResource("2_u2pkh")
+
+[node name="Hyperplane" type="MeshInstance3D" parent="."]
+transparency = 0.5
+mesh = SubResource("QuadMesh_2cnfk")
+script = ExtResource("2_4y80m")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, 0.353553, -0.612372, 0, 0.866025, 0.5, 0.707107, -0.353553, 0.612372, -0.877933, 1.25127, 1.03428)
+
+[node name="MeshBuilder" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_tdind")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.49817)

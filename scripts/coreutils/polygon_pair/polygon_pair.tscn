@@ -1,0 +1,38 @@
+[gd_scene load_steps=11 format=3 uid="uid://bdd1glmdbfmuv"]
+
+[ext_resource type="Script" path="res://scripts/coreutils/polygon_pair/polygon_pair.gd" id="1_s4p2h"]
+[ext_resource type="Texture2D" uid="uid://dkq5t3khtyvj2" path="res://resources/images/sprites/environments/grounds/gnd1.png" id="2_54ujo"]
+[ext_resource type="Shader" path="res://shaders/vfx/grass/grass.gdshader" id="2_j0txt"]
+[ext_resource type="Texture2D" uid="uid://cebquijxksxxx" path="res://resources/images/sprites/environments/grass/grass1.png" id="2_s7agq"]
+[ext_resource type="Texture2D" uid="uid://b77onro1ont26" path="res://resources/images/sprites/environments/grass/grass2.png" id="3_ayscm"]
+[ext_resource type="Texture2D" uid="uid://drm2l10cio53r" path="res://resources/images/sprites/environments/grass/grass3.png" id="4_k3ldt"]
+[ext_resource type="Texture2D" uid="uid://4r86kc5ps7a4" path="res://resources/images/sprites/environments/grass/grass4.png" id="5_qic0h"]
+[ext_resource type="Texture2D" uid="uid://dp8mx4ej4oeg0" path="res://resources/images/sprites/environments/grass/grass5.png" id="6_58mki"]
+[ext_resource type="Texture2D" uid="uid://c675df22k4q4b" path="res://resources/images/sprites/environments/grass/grass6.png" id="7_l4p3a"]
+[ext_resource type="Script" path="res://scripts/coreutils/grass_generator/grass_generator.gd" id="9_c5er0"]
+
+[node name="PolygonPair" type="Polygon2D"]
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_s4p2h")
+
+[node name="GrassGenerator" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("9_c5er0")
+grass_shader = ExtResource("2_j0txt")
+textures = Array[Texture2D]([ExtResource("2_s7agq"), ExtResource("3_ayscm"), ExtResource("4_k3ldt"), ExtResource("5_qic0h"), ExtResource("6_58mki"), ExtResource("7_l4p3a")])
+
+[node name="Line" type="Line2D" parent="."]
+unique_name_in_owner = true
+points = PackedVector2Array(734, 53)
+closed = true
+width = 16.0
+texture = ExtResource("2_54ujo")
+texture_mode = 1
+joint_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Body" type="StaticBody2D" parent="."]
+
+[node name="Collision" type="CollisionPolygon2D" parent="Body"]
+unique_name_in_owner = true

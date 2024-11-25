@@ -1,0 +1,33 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://bjufs4x0a4tey"]
+
+[ext_resource type="FontFile" uid="uid://b1l7o7o1qmn5t" path="res://resources/fonts/big_blue_terminal/BigBlueTermPlusNerdFont-Regular.ttf" id="1_tbkfq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fjiog"]
+bg_color = Color(1, 1, 1, 0.462745)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dehj3"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[resource]
+default_font = ExtResource("1_tbkfq")
+default_font_size = 18
+Button/styles/pressed = SubResource("StyleBoxFlat_fjiog")
+MarginContainer/constants/margin_bottom = 24
+MarginContainer/constants/margin_left = 24
+MarginContainer/constants/margin_right = 24
+MarginContainer/constants/margin_top = 24
+Panel/styles/panel = SubResource("StyleBoxFlat_dehj3")
