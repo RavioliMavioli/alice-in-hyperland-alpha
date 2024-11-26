@@ -16,8 +16,8 @@ func _init() -> void:
 func _ready() -> void:
 	init_hyperplane_pos = global_position
 	
-func _input(event: InputEvent) -> void:
-	dir = Input.get_axis("W", "S")
+func _input(_event: InputEvent) -> void:
+	dir = int(Input.get_axis("W", "S"))
 	if prev_dir == dir:
 		return
 	if dir != 0:

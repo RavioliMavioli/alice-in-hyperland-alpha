@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bdd1glmdbfmuv"]
+[gd_scene load_steps=12 format=3 uid="uid://bdd1glmdbfmuv"]
 
 [ext_resource type="Script" path="res://scripts/coreutils/polygon_pair/polygon_pair.gd" id="1_s4p2h"]
 [ext_resource type="Texture2D" uid="uid://dkq5t3khtyvj2" path="res://resources/images/sprites/environments/grounds/gnd1.png" id="2_54ujo"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dp8mx4ej4oeg0" path="res://resources/images/sprites/environments/grass/grass5.png" id="6_58mki"]
 [ext_resource type="Texture2D" uid="uid://c675df22k4q4b" path="res://resources/images/sprites/environments/grass/grass6.png" id="7_l4p3a"]
 [ext_resource type="Script" path="res://scripts/coreutils/grass_generator/grass_generator.gd" id="9_c5er0"]
+[ext_resource type="Script" path="res://scripts/coreutils/grass_generator/grass.gd" id="10_pg1q0"]
 
 [node name="PolygonPair" type="Polygon2D"]
 color = Color(0, 0, 0, 1)
@@ -20,6 +21,7 @@ unique_name_in_owner = true
 script = ExtResource("9_c5er0")
 grass_shader = ExtResource("2_j0txt")
 textures = Array[Texture2D]([ExtResource("2_s7agq"), ExtResource("3_ayscm"), ExtResource("4_k3ldt"), ExtResource("5_qic0h"), ExtResource("6_58mki"), ExtResource("7_l4p3a")])
+grass_script = ExtResource("10_pg1q0")
 
 [node name="Line" type="Line2D" parent="."]
 unique_name_in_owner = true
@@ -31,6 +33,9 @@ texture_mode = 1
 joint_mode = 1
 begin_cap_mode = 2
 end_cap_mode = 2
+
+[node name="Occluder" type="LightOccluder2D" parent="."]
+unique_name_in_owner = true
 
 [node name="Body" type="StaticBody2D" parent="."]
 

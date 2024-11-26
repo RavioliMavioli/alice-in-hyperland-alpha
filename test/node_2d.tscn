@@ -1,14 +1,33 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqe8x38tegbdh"]
+[gd_scene load_steps=14 format=3 uid="uid://dqe8x38tegbdh"]
 
 [ext_resource type="Script" path="res://test/node_2d.gd" id="1_1nb8i"]
 [ext_resource type="Script" path="res://scripts/components/camera/camera.gd" id="2_gafeg"]
+[ext_resource type="Script" path="res://scripts/coreutils/viewport_controller/viewport_controller.gd" id="2_obpec"]
 [ext_resource type="PackedScene" uid="uid://chjax4mclac7v" path="res://test/node_3d.tscn" id="2_pw5lg"]
-[ext_resource type="Environment" uid="uid://2y6cpv3jv0dq" path="res://data/world_environments/main_env.tres" id="3_7nucg"]
+[ext_resource type="Environment" uid="uid://2y6cpv3jv0dq" path="res://main_game.tres" id="3_7nucg"]
+[ext_resource type="Script" path="res://scripts/coreutils/camera_3d_controller/camera_3d_controller.gd" id="3_hi6t1"]
 [ext_resource type="PackedScene" uid="uid://65lu22pamprs" path="res://scripts/components/players/player.tscn" id="5_a6e1y"]
+[ext_resource type="Texture2D" uid="uid://bqfwc8rfk50p7" path="res://icon.svg" id="5_lj7vt"]
 [ext_resource type="PackedScene" uid="uid://caexqot86tvby" path="res://scripts/components/air_particles/air_particles.tscn" id="6_tvgfn"]
+[ext_resource type="AudioStream" uid="uid://vmxrk7g2lnoo" path="res://resources/audio/music/003_Vaporware.mp3" id="8_f2q3t"]
+[ext_resource type="Script" path="res://scripts/coreutils/deathzone/deathzone.gd" id="10_34r40"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jjhg3"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7mjc1"]
+size = Vector2(10000, 20)
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_1nb8i")
+
+[node name="Scripts" type="Node" parent="."]
+
+[node name="ViewportController" type="Node" parent="Scripts"]
+script = ExtResource("2_obpec")
+
+[node name="Camera3DController" type="Node" parent="Scripts"]
+script = ExtResource("3_hi6t1")
 
 [node name="CLBack" type="CanvasLayer" parent="."]
 layer = -1
@@ -20,23 +39,43 @@ offset_bottom = 575.0
 color = Color(0, 0, 0, 1)
 metadata/_edit_lock_ = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
-script = ExtResource("2_gafeg")
+[node name="Entity" type="Node2D" parent="."]
 
-[node name="AirParticles" parent="Camera2D" instance=ExtResource("6_tvgfn")]
+[node name="Player" type="Node2D" parent="Entity"]
+
+[node name="Player" parent="Entity/Player" instance=ExtResource("5_a6e1y")]
 position = Vector2(0, -1)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource("3_7nucg")
+[node name="Enemy" type="Node2D" parent="Entity"]
 
-[node name="Player" parent="." instance=ExtResource("5_a6e1y")]
+[node name="RigidBody2D" type="RigidBody2D" parent="Entity/Enemy"]
+position = Vector2(248, -80)
+collision_layer = 0
+collision_mask = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="Entity/Enemy/RigidBody2D"]
+position = Vector2(-4.76837e-06, -1.19209e-06)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("5_lj7vt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entity/Enemy/RigidBody2D"]
+shape = SubResource("RectangleShape2D_jjhg3")
+
+[node name="Camera" type="Node2D" parent="Entity"]
+
+[node name="Camera2D" type="Camera2D" parent="Entity/Camera"]
+script = ExtResource("2_gafeg")
+
+[node name="AirParticles" parent="Entity/Camera/Camera2D" instance=ExtResource("6_tvgfn")]
 position = Vector2(0, -1)
 
 [node name="CLFront" type="CanvasLayer" parent="."]
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="CLFront"]
-offset_left = 768.0
-offset_top = 448.0
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.392157)
+offset_left = 800.0
+offset_top = 416.0
 offset_right = 1022.0
 offset_bottom = 572.0
 size_flags_horizontal = 3
@@ -45,7 +84,7 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="CLFront/SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(254, 124)
+size = Vector2i(222, 156)
 render_target_update_mode = 4
 
 [node name="Node3D" parent="CLFront/SubViewportContainer/SubViewport" instance=ExtResource("2_pw5lg")]
@@ -65,3 +104,19 @@ offset_top = 26.0
 offset_right = 75.0
 offset_bottom = 49.0
 text = "FPS:"
+
+[node name="Deathzone" type="Area2D" parent="."]
+position = Vector2(560, 624)
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("10_34r40")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deathzone"]
+shape = SubResource("RectangleShape2D_7mjc1")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("3_7nucg")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_f2q3t")
+volume_db = -6.0

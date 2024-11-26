@@ -36,6 +36,6 @@ func _camera_physics(delta: float) -> void:
 	self.global_position.x = lerp(self.global_position.x, player_pos.x + offset_x, delta * 3.5)
 	self.global_position.y = lerp(self.global_position.y, player_pos.y + VERTICAL_OFFSET, delta * 1.0)
 	
-func _cap_to_limit(delta: float) -> void:
+func _cap_to_limit(_delta: float) -> void:
 	self.global_position = Vector2(	clamp(self.global_position.x, limit.x, limit.w),
 									clamp(self.global_position.y, limit.y, limit.z))

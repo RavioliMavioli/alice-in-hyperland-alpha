@@ -4,13 +4,16 @@ var mesh_pair: MeshPair
 var thread_pair: Thread
 var has_children := false
 var new_pol: PackedVector2Array
+var occluder_pol := OccluderPolygon2D.new()
 
 @onready var line := %Line
 @onready var collision := %Collision
 @onready var grass_generator := %GrassGenerator
+@onready var occluder := %Occluder
 
 func _ready() -> void:
 	global_position = Vector2(mesh_pair.global_position.x, mesh_pair.global_position.y) * Constants.METER_TO_PIXEL
+	occluder.occluder = occluder_pol
 
 func update_vertices(arr: PackedVector2Array, child_arr: PackedVector2Array) -> void:
 	if !child_arr.is_empty() and !Geometry2D.clip_polygons(arr, child_arr).is_empty():
@@ -18,17 +21,20 @@ func update_vertices(arr: PackedVector2Array, child_arr: PackedVector2Array) -> 
 	else:
 		new_pol = arr
 	if !Settings.multi_threaded:
-		_thread_function(arr, child_arr)
+		_thread_function(arr)
+		grass_generator.pass_vertices(new_pol, mesh_pair)
+		return
+	if thread_pair == null:
 		return
 	if thread_pair.is_started():
 		thread_pair.wait_to_finish()
 	thread_pair.start(func():
-		thread_pair.set_thread_safety_checks_enabled(false)
-		_thread_function(arr, child_arr)
+		Thread.set_thread_safety_checks_enabled(false)
+		_thread_function(arr)
 	)
-	grass_generator.pass_vertices(new_pol, mesh_pair)
+	grass_generator.pass_vertices(new_pol, mesh_pair, thread_pair)
 
-func _thread_function(arr: PackedVector2Array, child_arr: PackedVector2Array) -> void:
+func _thread_function(arr: PackedVector2Array) -> void:
 	if arr.is_empty() or arr == null:
 		_empty_polygon()
 		hide()
@@ -37,11 +43,16 @@ func _thread_function(arr: PackedVector2Array, child_arr: PackedVector2Array) ->
 		return
 	if new_pol.is_empty():
 		return
+	show()
 	polygon = new_pol
 	line.points = new_pol
 	collision.polygon = new_pol
-	show()
+	occluder_pol.polygon = new_pol
+	collision.disabled = false
+
 func _empty_polygon() -> void:
-	polygon = []
-	line.points = []
-	collision.polygon = []
+	polygon.resize(0)
+	line.points.resize(0)
+	collision.polygon.resize(0)
+	occluder_pol.polygon.resize(0)
+	collision.disabled = true

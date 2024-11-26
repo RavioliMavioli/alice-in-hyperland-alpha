@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<title>$GODOT_PROJECT_NAME</title>
+		<style>
+  
+@font-face { font-family: BigBlue; src: url('BigBlue.ttf'); } 
+
+:root {
+  --progress_value: 0.0turn;
+}
+
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+*{
+  font-family: BigBlue;
+  font-size: 3vh;
+}
+
+body {
+	color: white;
+	background-color: black;
+	overflow: hidden;
+	touch-action: none;
+}
+
+#canvas {
+	display: block;
+}
+
+#canvas:focus {
+	outline: none;
+}
+
+#status, #status-splash {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+#status, #status-splash {
+	top: 0;
+	bottom: 0;
+}
+
+#status {
+	background-color: #191214;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+}
+
+#status-splash {
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+
+#status-notice {
+	display: none;
+}
+
+#status-notice {
+	border-radius: 0.5rem;
+	border: 1px solid #9b3943;
+	color: #e0e0e0;
+	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
+	line-height: 1.3;
+	margin: 0 2rem;
+	overflow: hidden;
+	padding: 1rem;
+	text-align: center;
+	z-index: 1;
+}
+
+.circular-progress-container{
+	position: absolute;
+  width: 25vh;
+  height: 25vh;
+}
+
+#circular-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+	position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(#ffb701 var(--progress_value), #0f0a0c 0deg);
+  
+}
+
+#circular-progress::before {
+  content: "";
+  position: absolute;
+  width: 85%;
+  height: 85%;
+  border-radius: 50%;
+  background-color: #191214;
+}
+
+#text-progress {
+  position: relative;
+}
+
+#progress-tip {
+	position: absolute;
+	left: 0;
+	right: 0;
+  bottom: 25%;
+  text-align: center;
+}
+
+#debug {
+  /*display: none;*/
+  position: absolute;
+	left: 0;
+	right: 0;
+  top: 0;
+  width: 10%;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+#black-screen{
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+
+.status-animate{
+  animation-name: status-animate-out;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+}
+
+.screen-animate {
+  animation-name: screen-animate-out;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes status-animate-out {
+  0% {scale: 100%;}
+	20% {scale: 103%;}
+  100% {scale: 100%;}
+}
+
+@keyframes screen-animate-out {
+  0% {opacity: 0%;}
+	20% {opacity: 0%;}
+  100% {opacity: 100%;}
+}
+
+		</style>
+		$GODOT_HEAD_INCLUDE
+	</head>
+	<body>
+		<canvas id="canvas">
+			Your browser does not support the canvas tag.
+		</canvas>
+
+		<noscript>
+			Your browser does not support JavaScript.
+		</noscript>
+
+		<div id="status">
+			<img id="status-splash" src="$GODOT_SPLASH" alt="">
+      <button id="debug" onclick="clickDebug()">yeet</button>
+      <div class="circular-progress-container">
+        <div id="circular-progress">
+          <span id="text-progress">
+              0%
+          </span>
+        </div>
+      </div>
+			<div id="progress-tip">Downloading assets...</div>
+			<div id="status-notice"></div>
+      <div id="black-screen"></div>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  let cl = false
+  let mode = 'progress'
+  updateShit()
+
+  function clickDebug(){
+    cl = !cl
+    console.log(cl)
+    mode = cl ? 'hidden' : 'progress'
+    updateShit()
+  }
+
+  function updateShit(){
+    const statusOverlay = document.getElementById('status');
+    const circularProgress = document.getElementById('circular-progress');
+    const textProgress = document.getElementById('text-progress');
+    const statusNotice = document.getElementById('status-notice');
+    const tip = document.getElementById('progress-tip');
+    const blackScreen = document.getElementById('black-screen');
+		statusOverlay.style.visibility = 'visible';
+		circularProgress.style.display = mode === 'progress' ? 'flex' : 'none';
+		textProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		tip.style.display = mode === 'progress' ? 'block' : 'none';
+    blackScreen.style.display = mode === 'progress' ? 'none' : 'block';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+    //statusMode = mode;
+
+    if (mode === 'hidden'){
+      statusOverlay.classList.add("status-animate")
+      blackScreen.classList.add("screen-animate")
+      setTimeout(()=>{},1000)
+    }
+  }
+
+
+</script>

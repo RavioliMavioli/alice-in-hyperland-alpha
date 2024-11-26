@@ -58,7 +58,7 @@ func _clock_function(include_static := false) -> void:
 			if thread.is_started():
 				thread.wait_to_finish()
 			thread.start(func():
-				thread.set_thread_safety_checks_enabled(false)
+				Thread.set_thread_safety_checks_enabled(false)
 				_update_vertices(triangles, mesh, c_triangles, include_static)
 			)
 		else:
@@ -133,7 +133,7 @@ func _intersection_points(triangles: Array[PackedVector3Array], plane: Hyperplan
 	
 	return tmp_vec2
 
-func _merge_close_arr(arr: PackedVector2Array) -> PackedVector2Array:
+func _merge_close_arr(arr: PackedVector2Array, tolerance := Constants.DIST_TOLERANCE) -> PackedVector2Array:
 	var new_arr: PackedVector2Array
 	var prev_v: Vector2
 	for v in arr:

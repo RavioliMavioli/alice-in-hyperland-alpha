@@ -22,6 +22,7 @@ func load_all_meshes(meshes: Array) -> void:
 	for n in meshes:
 		if n is MeshPair and n != null:
 			TriangleData.add_mesh(n)
+			#_remove_mesh(n)
 
 func add_mesh(mesh: MeshPair) -> void:
 	## Heavy function, must not be executed in the game loop
@@ -55,10 +56,10 @@ func _triangles_from_mesh(mesh: MeshPair, offset := Vector3.ZERO) -> Array[Packe
 	var sets_of_triangles: Array[PackedVector3Array]
 	var tmp_triangle: PackedVector3Array
 	var new_p: Vector3
-	var rotation := mesh.global_rotation
 	var i := 0
+	
 	for p in triangles:
-		new_p = _rotate(p, rotation.y, rotation.x, rotation.z)
+		new_p = _rotate(p, mesh)
 		new_p = _scale(new_p, mesh)
 		new_p += offset
 		tmp_triangle.append(new_p)
@@ -68,9 +69,6 @@ func _triangles_from_mesh(mesh: MeshPair, offset := Vector3.ZERO) -> Array[Packe
 			tmp_triangle = []
 			i = 0
 	return sets_of_triangles
-
-func _sort_custom_by_z(a: Vector3, b: Vector3):
-	return a.z < b.z
 	
 func _sort_triangle_by_z(triangles: Array[PackedVector3Array]) -> Array[PackedVector3Array]:
 	var tmp_tris: Array[PackedVector3Array]
@@ -83,38 +81,18 @@ func _sort_triangle_by_z(triangles: Array[PackedVector3Array]) -> Array[PackedVe
 		tmp_tris.append(tris as PackedVector3Array)
 	return tmp_tris
 
+func _sort_custom_by_z(a: Vector3, b: Vector3):
+	return a.z < b.z
+
+func _remove_mesh(mesh: MeshPair) -> void:
+	mesh.mesh = null
+
 func _scale(point: Vector3, mesh: MeshPair) -> Vector3:
 	return point * mesh.scale
 
-func _rotate(point, pitch, roll, yaw):
-	var cosa = cos(yaw)
-	var sina = sin(yaw)
-
-	var cosb = cos(pitch)
-	var sinb = sin(pitch)
-
-	var cosc = cos(roll)
-	var sinc = sin(roll)
-
-	var Axx = cosa*cosb
-	var Axy = cosa*sinb*sinc - sina*cosc
-	var Axz = cosa*sinb*cosc + sina*sinc
-
-	var Ayx = sina*cosb
-	var Ayy = sina*sinb*sinc + cosa*cosc
-	var Ayz = sina*sinb*cosc - cosa*sinc
-
-	var Azx = -sinb
-	var Azy = cosb*sinc
-	var Azz = cosb*cosc
-
-	var px = point.x
-	var py = point.y
-	var pz = point.z
-
-	px = Axx*px + Axy*py + Axz*pz
-	py = Ayx*px + Ayy*py + Ayz*pz
-	pz = Azx*px + Azy*py + Azz*pz
-	
-	return Vector3(px, py, pz)
+func _rotate(point: Vector3, mesh: MeshPair) -> Vector3:
+	var new_p := point.rotated(Vector3(1,0,0), mesh.global_rotation.x)
+	new_p = new_p.rotated(Vector3(0,1,0), mesh.global_rotation.y)
+	new_p = new_p.rotated(Vector3(0,0,1), mesh.global_rotation.z)
+	return new_p
 	

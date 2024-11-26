@@ -13,7 +13,7 @@ enum FLIP {LEFT, RIGHT}
 var current_state: STATE
 var current_flip: FLIP
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if sprite_node == null:
 		return
 	# Graphical related process

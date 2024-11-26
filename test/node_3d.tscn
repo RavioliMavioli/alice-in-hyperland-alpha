@@ -1,17 +1,17 @@
-[gd_scene load_steps=9 format=3 uid="uid://chjax4mclac7v"]
+[gd_scene load_steps=11 format=3 uid="uid://chjax4mclac7v"]
 
 [ext_resource type="Script" path="res://test/node_3d.gd" id="1_2pnr2"]
 [ext_resource type="Script" path="res://scripts/coreutils/hyperplane/hyperplane.gd" id="2_4y80m"]
 [ext_resource type="Script" path="res://scripts/coreutils/mesh_pair/mesh_pair.gd" id="2_u2pkh"]
+[ext_resource type="ArrayMesh" uid="uid://bpg3mqx4bi0f0" path="res://resources/meshes/untitled3.obj" id="3_qf67r"]
 [ext_resource type="Script" path="res://test/mesh_builder.gd" id="3_tdind"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_1p6nk"]
-size = Vector3(6.79, 1, 1)
-subdivide_width = 32
-subdivide_height = 32
-subdivide_depth = 32
+[ext_resource type="Script" path="res://scripts/components/camera/camera_3d.gd" id="4_nwsbl"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_shd56"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_v161c"]
+radius = 0.3
+height = 1.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_dv7wu"]
 size = Vector3(15, 1, 7)
@@ -20,7 +20,7 @@ subdivide_height = 32
 subdivide_depth = 32
 
 [sub_resource type="QuadMesh" id="QuadMesh_2cnfk"]
-size = Vector2(2, 3)
+size = Vector2(4, 2.5)
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_2pnr2")
@@ -31,19 +31,28 @@ unique_name_in_owner = true
 [node name="Dynamic" type="Node3D" parent="Meshes"]
 unique_name_in_owner = true
 
-[node name="MeshInstance3D10" type="MeshInstance3D" parent="Meshes/Dynamic"]
-transform = Transform3D(0.265165, 0, 0.265165, 0, 0.375, 0, -0.265165, 0, 0.265165, -1.31804, -0.0906324, 0)
-transparency = 0.5
-mesh = SubResource("BoxMesh_1p6nk")
-skeleton = NodePath("../../..")
-script = ExtResource("2_u2pkh")
-
 [node name="MeshInstance3D9" type="MeshInstance3D" parent="Meshes/Dynamic"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 transparency = 0.5
 mesh = SubResource("SphereMesh_shd56")
 skeleton = NodePath("../../..")
 script = ExtResource("2_u2pkh")
+grass_direction = 1
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="Meshes/Dynamic"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -4.73769, -1.11475, 0)
+transparency = 0.5
+mesh = SubResource("CapsuleMesh_v161c")
+skeleton = NodePath("../../..")
+script = ExtResource("2_u2pkh")
+grass_direction = 2
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="Meshes/Dynamic"]
+transform = Transform3D(0.595, 0, 0, 0, 0.595, 0, 0, 0, 0.595, -3.53619, -1.32813, 0)
+transparency = 0.5
+mesh = ExtResource("3_qf67r")
+skeleton = NodePath("../../..")
+script = ExtResource("2_u2pkh")
+grass_direction = 2
 
 [node name="Static" type="Node3D" parent="Meshes"]
 unique_name_in_owner = true
@@ -54,6 +63,7 @@ transparency = 0.5
 mesh = SubResource("BoxMesh_dv7wu")
 skeleton = NodePath("../../..")
 script = ExtResource("2_u2pkh")
+grass_direction = 2
 
 [node name="Hyperplane" type="MeshInstance3D" parent="."]
 transparency = 0.5
@@ -61,7 +71,8 @@ mesh = SubResource("QuadMesh_2cnfk")
 script = ExtResource("2_4y80m")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.707107, 0.353553, -0.612372, 0, 0.866025, 0.5, 0.707107, -0.353553, 0.612372, -0.877933, 1.25127, 1.03428)
+transform = Transform3D(1, -5.59823e-07, 3.34863e-07, 4.54079e-07, 0.965926, 0.258818, -4.68345e-07, -0.258818, 0.965926, -0.1, 0.6, 2)
+script = ExtResource("4_nwsbl")
 
 [node name="MeshBuilder" type="Node" parent="."]
 unique_name_in_owner = true

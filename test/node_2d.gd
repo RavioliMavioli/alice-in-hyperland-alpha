@@ -9,5 +9,5 @@ func _ready() -> void:
 	await get_tree().create_timer(0.1).timeout
 	PolygonProcessor._clock_function.call_deferred(true)
 	
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	fps.text = str(Engine.get_frames_per_second())

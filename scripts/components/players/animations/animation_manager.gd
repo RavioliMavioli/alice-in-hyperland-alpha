@@ -12,7 +12,7 @@ var state_machine:AnimationNodeStateMachinePlayback:
 func _ready() -> void:
 	animation_tree_node.active = true
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	#################### State ########################
 	#var player_state.STATE.keys()[player_state.current_state]
 	#AI_STATE.keys()[current_state]

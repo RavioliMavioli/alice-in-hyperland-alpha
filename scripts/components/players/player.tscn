@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://65lu22pamprs"]
+[gd_scene load_steps=18 format=3 uid="uid://65lu22pamprs"]
 
 [ext_resource type="Script" path="res://scripts/components/players/player.gd" id="1_x0r0g"]
+[ext_resource type="Script" path="res://scripts/components/players/scripts/grass_collider.gd" id="2_8y64v"]
 [ext_resource type="Texture2D" uid="uid://bb51v54arcfhp" path="res://shaders/vfx/bulb.tres" id="2_84lfk"]
 [ext_resource type="PackedScene" uid="uid://drsa77t6ny5wy" path="res://scripts/components/players/characters/alice/model.tscn" id="2_j6ybs"]
 [ext_resource type="Script" path="res://scripts/components/players/states/state_manager.gd" id="3_5qs7i"]
@@ -24,13 +25,20 @@ size = Vector2(50, 70.9375)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8mo6v"]
 size = Vector2(64, 40)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hq3ce"]
+size = Vector2(32, 32)
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_x0r0g")
 
+[node name="Scripts" type="Node" parent="."]
+
+[node name="GrassCollider" type="Node" parent="Scripts"]
+script = ExtResource("2_8y64v")
+
 [node name="PointLight2D" type="PointLight2D" parent="."]
-visible = false
 scale = Vector2(2, 2)
 color = Color(0.823529, 1, 1, 1)
 energy = 2.0
@@ -202,3 +210,13 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Lever"]
 position = Vector2(0, 4)
 shape = SubResource("RectangleShape2D_8mo6v")
+
+[node name="Grass" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Grass"]
+position = Vector2(-16, 16)
+shape = SubResource("RectangleShape2D_hq3ce")
+debug_color = Color(0.301892, 0.613905, 0.384642, 0.42)

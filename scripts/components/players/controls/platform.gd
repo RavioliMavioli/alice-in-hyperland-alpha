@@ -5,7 +5,7 @@ var player: Player:
 var platform_check: Area2D:
 	get: return %PlatformCheck
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if Player.enable_input == false:
 		return
 	if !platform_check.has_overlapping_bodies():
