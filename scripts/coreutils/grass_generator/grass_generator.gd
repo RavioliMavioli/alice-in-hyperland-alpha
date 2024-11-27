@@ -137,7 +137,7 @@ func _toggle_grass(grass: Sprite2D, enable: bool) -> void:
 		tween.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 		tween.tween_property(grass, "modulate:a", default_mod, tween_duration)
 	grass.visible = enable
-	grass.set_physics_process(enable)
+	grass.set_physics_process.call_deferred(enable)
 	
 func _clean_nulls(arr: Array) -> void:
 	for i in range(arr.size()):
