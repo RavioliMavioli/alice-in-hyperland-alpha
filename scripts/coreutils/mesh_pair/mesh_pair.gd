@@ -5,6 +5,7 @@ enum GRASS_DIRECTION {NONE, ALL, TOP, BOTTOM, TOP_BOTTOM, LEFT, RIGHT, LEFT_RIGH
 var polygon_pair: PolygonPair
 var face_ammount: int
 
+@export var use_legacy_polygon_sorter := false
 @export var grass_direction := GRASS_DIRECTION.NONE
 @export var mark_static := false:
 	set(val):

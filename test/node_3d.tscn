@@ -101,13 +101,6 @@ skeleton = NodePath("../../..")
 script = ExtResource("2_u2pkh")
 grass_direction = 1
 
-[node name="MeshInstance3D13" type="MeshInstance3D" parent="Meshes/Dynamic"]
-transform = Transform3D(0.999999, -0.00123369, 0.000392532, 0.00123222, 0.999992, 0.00372617, -0.000397143, -0.00372568, 0.999993, -1.66014, 0, 0)
-transparency = 0.5
-mesh = SubResource("SphereMesh_shd56")
-skeleton = NodePath("../../..")
-script = ExtResource("2_u2pkh")
-
 [node name="MeshInstance3D14" type="MeshInstance3D" parent="Meshes/Dynamic"]
 transform = Transform3D(0.999999, -0.00123369, 0.000392532, 0.00123222, 0.999992, 0.00372617, -0.000397143, -0.00372568, 0.999993, 1.18371, 0, 0)
 transparency = 0.5
@@ -140,6 +133,7 @@ transparency = 0.5
 mesh = SubResource("BoxMesh_dv7wu")
 skeleton = NodePath("../../..")
 script = ExtResource("2_u2pkh")
+use_legacy_polygon_sorter = true
 grass_direction = 2
 
 [node name="Hyperplane" type="MeshInstance3D" parent="."]
