@@ -79,8 +79,10 @@ func _sort_clockwise(arr: PackedVector2Array) -> PackedVector2Array:
 	return fixed_arr
 
 func _update_vertices(sorted_triangles: Array[PackedVector3Array], mesh_pair: MeshPair, c_triangles: Array[PackedVector3Array], include_static := false) -> void:
+	var srt_tri := _calculate_points_from_triangle(sorted_triangles)
+	var srt_chld := _calculate_points_from_triangle(c_triangles)
 	if !mesh_pair.mark_static or include_static:
-		mesh_pair.polygon_pair.update_vertices.call_deferred(_calculate_points_from_triangle(sorted_triangles), _calculate_points_from_triangle(c_triangles))
+		mesh_pair.polygon_pair.update_vertices.call_deferred(srt_tri, srt_chld)
 
 func _calculate_points_from_triangle(sorted_triangles: Array[PackedVector3Array]) -> PackedVector2Array:
 	var intersected_triangles := _intersected_triangles(sorted_triangles, hyperplane)
@@ -140,7 +142,7 @@ func _merge_close_arr(arr: PackedVector2Array, tolerance := Constants.DIST_TOLER
 		if prev_v == null:
 			prev_v = v
 			continue
-		if v.distance_to(prev_v) >= Constants.DIST_TOLERANCE:
+		if v.distance_to(prev_v) >= tolerance:
 			new_arr.append(v)
 			prev_v = v
 	return new_arr

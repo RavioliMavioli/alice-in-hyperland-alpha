@@ -61,6 +61,7 @@ func _triangles_from_mesh(mesh: MeshPair, offset := Vector3.ZERO) -> Array[Packe
 	for p in triangles:
 		new_p = _rotate(p, mesh)
 		new_p = _scale(new_p, mesh)
+		new_p = _offset_by_z(new_p, mesh)
 		new_p += offset
 		tmp_triangle.append(new_p)
 		i += 1
@@ -91,8 +92,14 @@ func _scale(point: Vector3, mesh: MeshPair) -> Vector3:
 	return point * mesh.scale
 
 func _rotate(point: Vector3, mesh: MeshPair) -> Vector3:
-	var new_p := point.rotated(Vector3(1,0,0), mesh.global_rotation.x)
-	new_p = new_p.rotated(Vector3(0,1,0), mesh.global_rotation.y)
+	var new_p := point
+
 	new_p = new_p.rotated(Vector3(0,0,1), mesh.global_rotation.z)
+	new_p = new_p.rotated(Vector3(1,0,0), mesh.global_rotation.x)
+	new_p = new_p.rotated(Vector3(0,1,0), mesh.global_rotation.y)
+
 	return new_p
+
+func _offset_by_z(point: Vector3, mesh: MeshPair) -> Vector3:
+	return point + Vector3(0,0, mesh.global_position.z)
 	

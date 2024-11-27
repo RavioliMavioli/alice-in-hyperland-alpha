@@ -7,7 +7,7 @@ var player: Player:
 
 const TERMINAL_VELOCITY := 850.0
 const DRAG := 5.0
-const DRAG_ON_AIR := 10.0
+const DRAG_ON_AIR := 15.0
 var direction: int
 var walked: float = false
 var walk: Timer

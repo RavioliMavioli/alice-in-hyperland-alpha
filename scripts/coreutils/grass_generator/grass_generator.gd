@@ -10,9 +10,9 @@ var tween_duration: float:
 	get:
 		match Settings.polygon_draw_rate:
 			Settings.POLYGON_DRAW_RATE._60FPS:
-				return 0.1
+				return 0.12
 			Settings.POLYGON_DRAW_RATE._30FPS:
-				return 0.075
+				return 0.08
 		return 0.05
 
 func pass_vertices(arr: PackedVector2Array, mesh_pair: MeshPair, thread: Thread = null) -> void:
@@ -34,7 +34,7 @@ func pass_vertices(arr: PackedVector2Array, mesh_pair: MeshPair, thread: Thread 
 		_add_grass(arr, mesh_pair)
 	)
 	initialized = true
-		
+
 func _init_grass(mesh_pair: MeshPair) -> void:
 	@warning_ignore("integer_division") 
 	var size := int(mesh_pair.face_ammount / 128)
@@ -71,34 +71,26 @@ func _add_grass(arr: PackedVector2Array, mesh_pair: MeshPair) -> void:
 			mesh_pair.GRASS_DIRECTION.RIGHT:
 				allowed_angle = 90
 		if rad_to_deg(angle) > - (allowed_angle + 10.0) and rad_to_deg(angle) < allowed_angle + 10.0:
-			_enable_grass(queue_grass[i], true)
-			_create_grass_tween.call_deferred(queue_grass[i], arr[i], arr[j])
+			_toggle_grass(queue_grass[i], true)
+			_create_grass_tween(queue_grass[i], arr[i], arr[j])
 		else:
-			_enable_grass(queue_grass[i], false)
+			_toggle_grass(queue_grass[i], false)
 		indx = i
+	_clear_unused_grass.call_deferred(indx, mesh_pair)
+
+func _clear_unused_grass(indx: int, mesh_pair: MeshPair) -> void:
 	if indx <= queue_grass.size():
 		for i in range(indx, queue_grass.size()):
 			if mesh_pair.mark_static:
 				queue_grass[i].queue_free()
 				continue
-			_enable_grass(queue_grass[i], false)
+			_toggle_grass(queue_grass[i], false)
 	if mesh_pair.mark_static:
 		_clean_nulls(queue_grass)
 
 func _create_new_grass(parent: Object) -> Sprite2D:
 	var rng := randf_range(0.3, 0.8)
 	var new_g := Sprite2D.new()
-	var new_area := Area2D.new()
-	var new_col := CollisionShape2D.new()
-	var new_circ := CircleShape2D.new()
-	new_circ.radius = 0.1
-	new_col.shape = new_circ
-	new_area.monitoring = false
-	_set_collision_mask([2], new_area, true)
-	
-	new_area.add_child.call_deferred(new_col)
-	new_g.add_child.call_deferred(new_area)
-	parent.add_child.call_deferred(new_g)
 	
 	new_g.set_script(grass_script)
 	queue_grass.append(new_g)
@@ -109,8 +101,8 @@ func _create_new_grass(parent: Object) -> Sprite2D:
 	new_g.scale = Vector2(rng, rng)
 	new_g.modulate.a = rng - 0.1
 	new_g.flip_h = randi_range(0,1)
+	parent.add_child.call_deferred(new_g)
 	
-	new_g.set_meta("area2d", new_area)
 	new_g.set_meta("modulation", new_g.modulate.a)
 	
 	return new_g
@@ -130,18 +122,10 @@ func _create_grass_tween(grass: Sprite2D, arr_pos: Vector2, next_arr_pos: Vector
 	var tween := get_tree().create_tween()
 	tween.set_parallel().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
 	tween.tween_property(grass, "global_position", arr_pos + owner.global_position, tween_duration)
-	tween.tween_property(grass, "global_rotation", arr_pos.angle_to_point(next_arr_pos), tween_duration)
+	#tween.tween_property(grass, "global_rotation", arr_pos.angle_to_point(next_arr_pos), tween_duration)
+	grass.global_rotation = arr_pos.angle_to_point(next_arr_pos)
 
-func _set_collision_mask(num: Array[int], what: Variant, collission_layer := false):
-	var num_bit: int = 0
-	for n in num:
-		num_bit += pow(2, n-1) as int # From godot multiple layer collision documentation
-	if !collission_layer:
-		what.collision_mask = num_bit
-	else:
-		what.collision_layer = num_bit
-
-func _enable_grass(grass: Sprite2D, enable: bool) -> void:
+func _toggle_grass(grass: Sprite2D, enable: bool) -> void:
 	if grass.visible == enable:
 		return
 	if enable:
@@ -153,8 +137,8 @@ func _enable_grass(grass: Sprite2D, enable: bool) -> void:
 		tween.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 		tween.tween_property(grass, "modulate:a", default_mod, tween_duration)
 	grass.visible = enable
-	grass.get_meta("area2d").set_deferred("monitorable" ,enable)
 	grass.set_physics_process(enable)
+	
 func _clean_nulls(arr: Array) -> void:
 	for i in range(arr.size()):
 		if arr[i] == null:

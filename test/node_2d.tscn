@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dqe8x38tegbdh"]
+[gd_scene load_steps=15 format=3 uid="uid://dqe8x38tegbdh"]
 
 [ext_resource type="Script" path="res://test/node_2d.gd" id="1_1nb8i"]
 [ext_resource type="Script" path="res://scripts/components/camera/camera.gd" id="2_gafeg"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://chjax4mclac7v" path="res://test/node_3d.tscn" id="2_pw5lg"]
 [ext_resource type="Environment" uid="uid://2y6cpv3jv0dq" path="res://main_game.tres" id="3_7nucg"]
 [ext_resource type="Script" path="res://scripts/coreutils/camera_3d_controller/camera_3d_controller.gd" id="3_hi6t1"]
+[ext_resource type="Script" path="res://scripts/coreutils/follow_2d_to_3d/follow_2d_to_3d.gd" id="4_75k6v"]
 [ext_resource type="PackedScene" uid="uid://65lu22pamprs" path="res://scripts/components/players/player.tscn" id="5_a6e1y"]
 [ext_resource type="Texture2D" uid="uid://bqfwc8rfk50p7" path="res://icon.svg" id="5_lj7vt"]
 [ext_resource type="PackedScene" uid="uid://caexqot86tvby" path="res://scripts/components/air_particles/air_particles.tscn" id="6_tvgfn"]
@@ -28,6 +29,9 @@ script = ExtResource("2_obpec")
 
 [node name="Camera3DController" type="Node" parent="Scripts"]
 script = ExtResource("3_hi6t1")
+
+[node name="Follow2DTo3D" type="Node" parent="Scripts"]
+script = ExtResource("4_75k6v")
 
 [node name="CLBack" type="CanvasLayer" parent="."]
 layer = -1

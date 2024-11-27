@@ -1,6 +1,9 @@
 class_name Hyperplane extends MeshInstance3D
 
+enum STATUS {ACTIVE, IDLE, DISABLED}
+
 static var instance: Hyperplane
+static var status := STATUS.IDLE
 
 const TWEEN_DUR := 0.33
 
@@ -18,22 +21,26 @@ func _ready() -> void:
 	
 func _input(_event: InputEvent) -> void:
 	dir = int(Input.get_axis("W", "S"))
+	if status == STATUS.DISABLED:
+		return
 	if prev_dir == dir:
 		return
 	if dir != 0:
 		_create_tween()
 		tween.tween_property(self, "accel", 1.0 * dir, TWEEN_DUR)
+		status = STATUS.ACTIVE
 		PolygonProcessor.start_polygon_update()
 	else:
 		_create_tween()
 		tween.tween_property(self, "accel", 0.0, TWEEN_DUR)
 		tween.finished.connect(func():
+			status = STATUS.IDLE
 			PolygonProcessor.stop_polygon_update()
 		)
 	prev_dir = dir
 
 func _physics_process(delta: float) -> void:
-	var target := accel * delta
+	var target := Constants.H_SPEED_MULT * accel * delta
 	if accel == 0:
 		return
 	global_position.z = clampf(global_position.z + target, -1.5, 1.5)

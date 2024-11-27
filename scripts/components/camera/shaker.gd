@@ -38,7 +38,7 @@ func _shake():
 	var shake_duration_normalized = duration.time_left/shake_duration
 	var rng = Vector2(	randf_range(-shake_factor*shake_duration_normalized,shake_factor*shake_duration_normalized)	,
 						randf_range(-shake_factor*shake_duration_normalized,shake_factor*shake_duration_normalized)	)
-	Camera.instance.global_position += rng
+	Camera.camera_pos += rng
 
 func _duration_timeout():
 	duration.queue_free()

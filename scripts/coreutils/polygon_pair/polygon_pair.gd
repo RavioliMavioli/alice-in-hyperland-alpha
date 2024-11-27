@@ -20,21 +20,10 @@ func update_vertices(arr: PackedVector2Array, child_arr: PackedVector2Array) -> 
 		new_pol = Geometry2D.clip_polygons(arr, child_arr)[0]
 	else:
 		new_pol = arr
-	if !Settings.multi_threaded:
-		_thread_function(arr)
-		grass_generator.pass_vertices(new_pol, mesh_pair)
-		return
-	if thread_pair == null:
-		return
-	if thread_pair.is_started():
-		thread_pair.wait_to_finish()
-	thread_pair.start(func():
-		Thread.set_thread_safety_checks_enabled(false)
-		_thread_function(arr)
-	)
+	_update_polygon(new_pol)
 	grass_generator.pass_vertices(new_pol, mesh_pair, thread_pair)
 
-func _thread_function(arr: PackedVector2Array) -> void:
+func _update_polygon(arr: PackedVector2Array) -> void:
 	if arr.is_empty() or arr == null:
 		_empty_polygon()
 		hide()
@@ -45,6 +34,7 @@ func _thread_function(arr: PackedVector2Array) -> void:
 		return
 	show()
 	polygon = new_pol
+	uv = new_pol
 	line.points = new_pol
 	collision.polygon = new_pol
 	occluder_pol.polygon = new_pol
@@ -52,6 +42,7 @@ func _thread_function(arr: PackedVector2Array) -> void:
 
 func _empty_polygon() -> void:
 	polygon.resize(0)
+	uv.resize(0)
 	line.points.resize(0)
 	collision.polygon.resize(0)
 	occluder_pol.polygon.resize(0)

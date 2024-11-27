@@ -1,7 +1,10 @@
 class_name Camera extends Camera2D
 
 var limit := Vector4(-100000, -100000, 100000, 100000)
+
 static var instance: Camera
+static var camera_pos: Vector2
+static var camera_pos3d: Vector3
 
 const VIEWPORT_RES := Vector2(1024, 576)
 const VERTICAL_OFFSET := -80.0
@@ -23,11 +26,12 @@ func _ready() -> void:
 func _physics_process(delta):
 	_camera_physics(delta)
 	_cap_to_limit(delta)
+	camera_pos = self.global_position
 	
 func _camera_physics(delta: float) -> void:
 	if Player.instance == null:
 		return
-	var player_pos: Vector2 = Player.instance.global_position
+	var player_pos: Vector2 = Player.player_pos
 	var dir = Input.get_axis("A", "D")
 	if dir != 0:
 		#if Player.enable_input == false: return

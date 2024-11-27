@@ -213,8 +213,8 @@ shape = SubResource("RectangleShape2D_8mo6v")
 
 [node name="Grass" type="Area2D" parent="."]
 unique_name_in_owner = true
-collision_layer = 0
-collision_mask = 2
+collision_layer = 4
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Grass"]
 position = Vector2(-16, 16)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://chjax4mclac7v"]
+[gd_scene load_steps=16 format=3 uid="uid://chjax4mclac7v"]
 
 [ext_resource type="Script" path="res://test/node_3d.gd" id="1_2pnr2"]
 [ext_resource type="Script" path="res://scripts/coreutils/hyperplane/hyperplane.gd" id="2_4y80m"]
@@ -6,6 +6,10 @@
 [ext_resource type="ArrayMesh" uid="uid://bpg3mqx4bi0f0" path="res://resources/meshes/untitled3.obj" id="3_qf67r"]
 [ext_resource type="Script" path="res://test/mesh_builder.gd" id="3_tdind"]
 [ext_resource type="Script" path="res://scripts/components/camera/camera_3d.gd" id="4_nwsbl"]
+[ext_resource type="Texture2D" uid="uid://bqfwc8rfk50p7" path="res://icon.svg" id="7_u5pss"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_sy4eq"]
+rings = 32
 
 [sub_resource type="SphereMesh" id="SphereMesh_shd56"]
 
@@ -15,12 +19,72 @@ height = 1.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_dv7wu"]
 size = Vector3(15, 1, 7)
-subdivide_width = 32
-subdivide_height = 32
+subdivide_width = 64
 subdivide_depth = 32
 
 [sub_resource type="QuadMesh" id="QuadMesh_2cnfk"]
 size = Vector2(4, 2.5)
+
+[sub_resource type="Shader" id="Shader_ffcm6"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.4.dev3's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
+
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
+uniform float point_size : hint_range(0.1, 128.0, 0.1);
+
+uniform float roughness : hint_range(0.0, 1.0);
+uniform sampler2D texture_metallic : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r, filter_linear_mipmap, repeat_enable;
+
+uniform float specular : hint_range(0.0, 1.0, 0.01);
+uniform float metallic : hint_range(0.0, 1.0, 0.01);
+
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+void vertex() {
+	UV = UV * uv1_scale.xy + uv1_offset.xy;
+}
+
+void fragment() {
+	vec2 base_uv = UV;
+
+	vec4 albedo_tex = texture(texture_albedo, base_uv);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+
+	float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	SPECULAR = specular;
+
+	vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
+	float roughness_tex = dot(texture(texture_roughness, base_uv), roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6074s"]
+render_priority = 0
+shader = SubResource("Shader_ffcm6")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("7_u5pss")
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_34xnn"]
+material = SubResource("ShaderMaterial_6074s")
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_2pnr2")
@@ -31,7 +95,15 @@ unique_name_in_owner = true
 [node name="Dynamic" type="Node3D" parent="Meshes"]
 unique_name_in_owner = true
 
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="Meshes/Dynamic"]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, -3.52848, -0.768765, 1.57902)
+transparency = 0.5
+mesh = SubResource("CapsuleMesh_sy4eq")
+skeleton = NodePath("../../..")
+script = ExtResource("2_u2pkh")
+
 [node name="MeshInstance3D9" type="MeshInstance3D" parent="Meshes/Dynamic"]
+transform = Transform3D(0.999999, -0.00123369, 0.000392532, 0.00123222, 0.999992, 0.00372617, -0.000397143, -0.00372568, 0.999993, 0, 0, 0)
 transparency = 0.5
 mesh = SubResource("SphereMesh_shd56")
 skeleton = NodePath("../../..")
@@ -80,3 +152,11 @@ script = ExtResource("3_tdind")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.49817)
+
+[node name="Character" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+mesh = SubResource("QuadMesh_34xnn")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.40738, 0, 0)
+depth = 0.01
