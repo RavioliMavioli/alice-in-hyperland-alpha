@@ -25,6 +25,7 @@ func pass_vertices(arr: PackedVector2Array, mesh_pair: MeshPair, thread: Thread 
 	if !Settings.multi_threaded:
 		_add_grass(arr, mesh_pair)
 		return
+	initialized = true
 	if thread == null:
 		return
 	if thread.is_started():
@@ -33,7 +34,7 @@ func pass_vertices(arr: PackedVector2Array, mesh_pair: MeshPair, thread: Thread 
 		Thread.set_thread_safety_checks_enabled(false)
 		_add_grass(arr, mesh_pair)
 	)
-	initialized = true
+	
 
 func _init_grass(mesh_pair: MeshPair) -> void:
 	@warning_ignore("integer_division") 
@@ -76,7 +77,7 @@ func _add_grass(arr: PackedVector2Array, mesh_pair: MeshPair) -> void:
 		else:
 			_toggle_grass(queue_grass[i], false)
 		indx = i
-	_clear_unused_grass.call_deferred(indx, mesh_pair)
+	_clear_unused_grass(indx, mesh_pair)
 
 func _clear_unused_grass(indx: int, mesh_pair: MeshPair) -> void:
 	if indx <= queue_grass.size():
@@ -86,7 +87,7 @@ func _clear_unused_grass(indx: int, mesh_pair: MeshPair) -> void:
 				continue
 			_toggle_grass(queue_grass[i], false)
 	if mesh_pair.mark_static:
-		_clean_nulls(queue_grass)
+		_clean_nulls.call_deferred(queue_grass)
 
 func _create_new_grass(parent: Object) -> Sprite2D:
 	var rng := randf_range(0.3, 0.8)

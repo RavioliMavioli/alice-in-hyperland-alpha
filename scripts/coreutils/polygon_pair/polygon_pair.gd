@@ -14,6 +14,7 @@ var occluder_pol := OccluderPolygon2D.new()
 func _ready() -> void:
 	global_position = Vector2(mesh_pair.global_position.x, mesh_pair.global_position.y) * Constants.METER_TO_PIXEL
 	occluder.occluder = occluder_pol
+	#line.queue_free()
 
 func update_vertices(arr: PackedVector2Array, child_arr: PackedVector2Array) -> void:
 	if !child_arr.is_empty() and !Geometry2D.clip_polygons(arr, child_arr).is_empty():
@@ -34,7 +35,6 @@ func _update_polygon(arr: PackedVector2Array) -> void:
 		return
 	show()
 	polygon = new_pol
-	uv = new_pol
 	line.points = new_pol
 	collision.polygon = new_pol
 	occluder_pol.polygon = new_pol
@@ -42,7 +42,6 @@ func _update_polygon(arr: PackedVector2Array) -> void:
 
 func _empty_polygon() -> void:
 	polygon.resize(0)
-	uv.resize(0)
 	line.points.resize(0)
 	collision.polygon.resize(0)
 	occluder_pol.polygon.resize(0)

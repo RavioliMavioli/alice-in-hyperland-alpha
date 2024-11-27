@@ -1,6 +1,5 @@
-[gd_scene load_steps=14 format=3 uid="uid://bdd1glmdbfmuv"]
+[gd_scene load_steps=13 format=3 uid="uid://bdd1glmdbfmuv"]
 
-[ext_resource type="Texture2D" uid="uid://bqfwc8rfk50p7" path="res://icon.svg" id="1_pi1gr"]
 [ext_resource type="Script" path="res://scripts/coreutils/polygon_pair/polygon_pair.gd" id="1_s4p2h"]
 [ext_resource type="Texture2D" uid="uid://dkq5t3khtyvj2" path="res://resources/images/sprites/environments/grounds/gnd1.png" id="2_54ujo"]
 [ext_resource type="Shader" path="res://shaders/vfx/grass/grass.gdshader" id="2_j0txt"]
@@ -18,8 +17,11 @@ _data = [Vector2(0, 0.525189), 0.0, 3.23363, 0, 0, Vector2(0.25, 1), 0.0, 0.0, 0
 point_count = 4
 
 [node name="PolygonPair" type="Polygon2D"]
+texture_filter = 1
+texture_repeat = 2
+scale = Vector2(1.00209, 1)
 color = Color(0, 0, 0, 1)
-texture = ExtResource("1_pi1gr")
+polygon = PackedVector2Array(-127.733, -64, -127.733, 64, 127.733, 64, 127.733, -64)
 script = ExtResource("1_s4p2h")
 
 [node name="GrassGenerator" type="Node" parent="."]

@@ -65,6 +65,8 @@ func _clock_function(include_static := false) -> void:
 			_update_vertices(triangles, mesh, c_triangles, include_static)
 
 func _sort_clockwise(arr: PackedVector2Array) -> PackedVector2Array:
+	## Old method, turns out Geometry2D.convex_hull will take care of sorting...
+	## ...clockwise at much faster rate
 	var center := _centeroid(arr)
 	var arr_dict := []
 	var fixed_arr := []
@@ -87,7 +89,8 @@ func _update_vertices(sorted_triangles: Array[PackedVector3Array], mesh_pair: Me
 func _calculate_points_from_triangle(sorted_triangles: Array[PackedVector3Array]) -> PackedVector2Array:
 	var intersected_triangles := _intersected_triangles(sorted_triangles, hyperplane)
 	var vec2_points := _intersection_points(intersected_triangles, hyperplane)
-	var sorted_points := _sort_clockwise(vec2_points)
+	#var sorted_points := _sort_clockwise(vec2_points)
+	var sorted_points := Geometry2D.convex_hull(vec2_points)
 	var new_points := _merge_close_arr(sorted_points)
 	return new_points
 

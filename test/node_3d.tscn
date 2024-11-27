@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://chjax4mclac7v"]
+[gd_scene load_steps=15 format=3 uid="uid://chjax4mclac7v"]
 
 [ext_resource type="Script" path="res://test/node_3d.gd" id="1_2pnr2"]
 [ext_resource type="Script" path="res://scripts/coreutils/hyperplane/hyperplane.gd" id="2_4y80m"]
@@ -8,14 +8,12 @@
 [ext_resource type="Script" path="res://scripts/components/camera/camera_3d.gd" id="4_nwsbl"]
 [ext_resource type="Texture2D" uid="uid://bqfwc8rfk50p7" path="res://icon.svg" id="7_u5pss"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_sy4eq"]
-rings = 32
-
 [sub_resource type="SphereMesh" id="SphereMesh_shd56"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_v161c"]
 radius = 0.3
 height = 1.0
+radial_segments = 32
 
 [sub_resource type="BoxMesh" id="BoxMesh_dv7wu"]
 size = Vector3(15, 1, 7)
@@ -95,13 +93,6 @@ unique_name_in_owner = true
 [node name="Dynamic" type="Node3D" parent="Meshes"]
 unique_name_in_owner = true
 
-[node name="MeshInstance3D12" type="MeshInstance3D" parent="Meshes/Dynamic"]
-transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, -3.52848, -0.768765, 1.57902)
-transparency = 0.5
-mesh = SubResource("CapsuleMesh_sy4eq")
-skeleton = NodePath("../../..")
-script = ExtResource("2_u2pkh")
-
 [node name="MeshInstance3D9" type="MeshInstance3D" parent="Meshes/Dynamic"]
 transform = Transform3D(0.999999, -0.00123369, 0.000392532, 0.00123222, 0.999992, 0.00372617, -0.000397143, -0.00372568, 0.999993, 0, 0, 0)
 transparency = 0.5
@@ -109,6 +100,20 @@ mesh = SubResource("SphereMesh_shd56")
 skeleton = NodePath("../../..")
 script = ExtResource("2_u2pkh")
 grass_direction = 1
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="Meshes/Dynamic"]
+transform = Transform3D(0.999999, -0.00123369, 0.000392532, 0.00123222, 0.999992, 0.00372617, -0.000397143, -0.00372568, 0.999993, -1.66014, 0, 0)
+transparency = 0.5
+mesh = SubResource("SphereMesh_shd56")
+skeleton = NodePath("../../..")
+script = ExtResource("2_u2pkh")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="Meshes/Dynamic"]
+transform = Transform3D(0.999999, -0.00123369, 0.000392532, 0.00123222, 0.999992, 0.00372617, -0.000397143, -0.00372568, 0.999993, 1.18371, 0, 0)
+transparency = 0.5
+mesh = SubResource("SphereMesh_shd56")
+skeleton = NodePath("../../..")
+script = ExtResource("2_u2pkh")
 
 [node name="MeshInstance3D10" type="MeshInstance3D" parent="Meshes/Dynamic"]
 transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, -4.73769, -1.11475, 0)

@@ -1,7 +1,7 @@
 extends Sprite2D
 
 const SWAY_DUR := 2.0
-const PLAYER_VEL_TO_SWAY := 150.0
+const PLAYER_VEL_TO_SWAY := 199.0
 
 var time := 0.0
 var physics_querry := PhysicsPointQueryParameters2D.new()
@@ -20,7 +20,7 @@ func _physics_process(delta: float) -> void:
 func _set_shader(delta: float) -> void:
 	time += delta
 	material.set("shader_parameter/timer", time)
-	if time >= 10000:
+	if time >= 100000:
 		time = 0
 	
 func _physics_querry() -> void:

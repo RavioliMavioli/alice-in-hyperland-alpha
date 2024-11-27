@@ -26,7 +26,7 @@ size = Vector2(50, 70.9375)
 size = Vector2(64, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hq3ce"]
-size = Vector2(32, 32)
+size = Vector2(8, 16)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 4
@@ -175,6 +175,24 @@ collision_mask = 3
 position = Vector2(0, 35.5312)
 shape = SubResource("RectangleShape2D_08t6q")
 
+[node name="Lever" type="Area2D" parent="Colliders"]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Colliders/Lever"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_8mo6v")
+
+[node name="Grass" type="Area2D" parent="Colliders"]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Colliders/Grass"]
+position = Vector2(-4, 24)
+shape = SubResource("RectangleShape2D_hq3ce")
+debug_color = Color(0.301892, 0.613905, 0.384642, 0.42)
+
 [node name="Controls" type="Node2D" parent="."]
 
 [node name="PlayerMovementControls" type="Node2D" parent="Controls"]
@@ -202,21 +220,3 @@ max_polyphony = 5
 stream = ExtResource("11_ol2ss")
 volume_db = -8.0
 max_polyphony = 5
-
-[node name="Lever" type="Area2D" parent="."]
-collision_layer = 4
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Lever"]
-position = Vector2(0, 4)
-shape = SubResource("RectangleShape2D_8mo6v")
-
-[node name="Grass" type="Area2D" parent="."]
-unique_name_in_owner = true
-collision_layer = 4
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Grass"]
-position = Vector2(-16, 16)
-shape = SubResource("RectangleShape2D_hq3ce")
-debug_color = Color(0.301892, 0.613905, 0.384642, 0.42)
