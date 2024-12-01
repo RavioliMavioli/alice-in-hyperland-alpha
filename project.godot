@@ -29,6 +29,8 @@ GameSaveManager="*res://scripts/singletons/game_save_manager.gd"
 Audio="*res://scripts/singletons/audio.gd"
 DataService="*res://scripts/singletons/data_service.gd"
 Settings="*res://scripts/singletons/settings.gd"
+PolygonProfile="*res://scripts/singletons/polygon_profile.gd"
+MeshGenerator="*res://scripts/singletons/mesh_generator.gd"
 
 [display]
 

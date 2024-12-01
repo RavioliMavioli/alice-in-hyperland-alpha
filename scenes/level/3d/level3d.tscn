@@ -1,0 +1,140 @@
+[gd_scene load_steps=14 format=3 uid="uid://bti4t7tjophww"]
+
+[ext_resource type="Script" path="res://scenes/level/3d/level3d.gd" id="1_sq6nm"]
+[ext_resource type="Script" path="res://scripts/coreutils/csg_combiner/csg_combiner.gd" id="4_247r5"]
+[ext_resource type="ArrayMesh" uid="uid://ci447e4hyk18k" path="res://resources/meshes/tree.obj" id="4_bbwew"]
+[ext_resource type="ArrayMesh" uid="uid://bpg3mqx4bi0f0" path="res://resources/meshes/untitled3.obj" id="4_yf82o"]
+[ext_resource type="Script" path="res://scripts/coreutils/hyperplane/hyperplane.gd" id="5_5hrg4"]
+[ext_resource type="Script" path="res://scripts/components/camera/camera_3d.gd" id="6_lty6o"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kqfxv"]
+rings = 32
+
+[sub_resource type="SphereMesh" id="SphereMesh_oy2j0"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_r1yqt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_72365"]
+size = Vector3(1.62, 1.615, 1.685)
+subdivide_width = 16
+subdivide_height = 16
+subdivide_depth = 16
+
+[sub_resource type="SphereMesh" id="SphereMesh_63lfp"]
+radial_segments = 32
+
+[sub_resource type="BoxMesh" id="BoxMesh_kk47b"]
+size = Vector3(5, 0.465, 2)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="QuadMesh" id="QuadMesh_2cnfk"]
+size = Vector2(4, 2.5)
+
+[node name="Level3D" type="Node3D"]
+script = ExtResource("1_sq6nm")
+
+[node name="Meshes" type="Node3D" parent="."]
+unique_name_in_owner = true
+process_mode = 4
+physics_interpolation_mode = 2
+
+[node name="Dynamic" type="Node3D" parent="Meshes"]
+unique_name_in_owner = true
+
+[node name="CSGCombiner3D3" type="CSGCombiner3D" parent="Meshes/Dynamic"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.64972, 0.421461, 0)
+calculate_tangents = false
+script = ExtResource("4_247r5")
+profile = 1
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Meshes/Dynamic/CSGCombiner3D3"]
+transform = Transform3D(0.457394, 0.138323, 0.0453527, 0, 0.149547, -0.456109, -0.145569, 0.434629, 0.142504, 0, -0.5, 0)
+calculate_tangents = false
+mesh = SubResource("CylinderMesh_kqfxv")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="Meshes/Dynamic/CSGCombiner3D3"]
+transform = Transform3D(0.457394, 0.138323, 0.0453527, 0, 0.149547, -0.456109, -0.145569, 0.434629, 0.142504, -0.214474, -0.496497, -0.000590444)
+calculate_tangents = false
+mesh = SubResource("SphereMesh_oy2j0")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Meshes/Dynamic"]
+calculate_tangents = false
+script = ExtResource("4_247r5")
+profile = 1
+grass_direction = 1
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Meshes/Dynamic/CSGCombiner3D"]
+transform = Transform3D(0.457394, 0.138323, 0.0453527, 0, 0.149547, -0.456109, -0.145569, 0.434629, 0.142504, 0, -0.5, 0)
+calculate_tangents = false
+mesh = SubResource("CapsuleMesh_r1yqt")
+
+[node name="CSGCombiner3D5" type="CSGCombiner3D" parent="Meshes/Dynamic"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.29812, 0, 0)
+calculate_tangents = false
+script = ExtResource("4_247r5")
+profile = 1
+grass_direction = 1
+use_legacy_polygon_sorter = true
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Meshes/Dynamic/CSGCombiner3D5"]
+transform = Transform3D(0.199214, 0, 0.104589, 0, 0.225, 0, -0.104589, 0, 0.199214, -0.0052228, -0.5, -0.00184953)
+calculate_tangents = false
+mesh = SubResource("BoxMesh_72365")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="Meshes/Dynamic/CSGCombiner3D5"]
+transform = Transform3D(0.225, 0, 0, 0, 0.225, 0, 0, 0, 0.225, -0.0879421, -0.468373, 0.255395)
+operation = 2
+calculate_tangents = false
+mesh = SubResource("SphereMesh_63lfp")
+
+[node name="CSGCombiner3D4" type="CSGCombiner3D" parent="Meshes/Dynamic"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.12683, -1.81489, 0)
+calculate_tangents = false
+script = ExtResource("4_247r5")
+profile = 1
+grass_direction = 2
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="Meshes/Dynamic/CSGCombiner3D4"]
+transform = Transform3D(0.215239, 0.000883654, 0.045513, -0.0024128, 0.219871, 0.00714166, -0.0454576, -0.00748625, 0.215122, 0.000617027, 0.428433, 0.000117421)
+calculate_tangents = false
+mesh = ExtResource("4_bbwew")
+
+[node name="CSGCombiner3D2" type="CSGCombiner3D" parent="Meshes/Dynamic"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.12683, -1.81489, 0)
+calculate_tangents = false
+script = ExtResource("4_247r5")
+profile = 1
+grass_direction = 2
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Meshes/Dynamic/CSGCombiner3D2"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+calculate_tangents = false
+mesh = ExtResource("4_yf82o")
+
+[node name="Static" type="Node3D" parent="Meshes"]
+unique_name_in_owner = true
+
+[node name="CSGCombiner3D2" type="CSGCombiner3D" parent="Meshes/Static"]
+script = ExtResource("4_247r5")
+profile = 1
+grass_direction = 2
+use_legacy_polygon_sorter = true
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="Meshes/Static/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5296, 0)
+mesh = SubResource("BoxMesh_kk47b")
+
+[node name="Hyperplane" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transparency = 0.5
+mesh = SubResource("QuadMesh_2cnfk")
+script = ExtResource("5_5hrg4")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, -5.59823e-07, 3.34863e-07, 4.54079e-07, 0.965926, 0.258818, -4.68345e-07, -0.258818, 0.965926, -0.1, 0.6, 2)
+current = true
+script = ExtResource("6_lty6o")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.90545, 0.424452, 0, -0.424452, 0.90545, 0, 0, 1.49817)

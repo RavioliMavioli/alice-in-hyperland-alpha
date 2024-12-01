@@ -1,17 +1,17 @@
-[gd_scene load_steps=15 format=3 uid="uid://dqe8x38tegbdh"]
+[gd_scene load_steps=15 format=3 uid="uid://d3030y0w2vu4x"]
 
-[ext_resource type="Script" path="res://test/node_2d.gd" id="1_1nb8i"]
-[ext_resource type="Script" path="res://scripts/components/camera/camera.gd" id="2_gafeg"]
-[ext_resource type="Script" path="res://scripts/coreutils/viewport_controller/viewport_controller.gd" id="2_obpec"]
-[ext_resource type="PackedScene" uid="uid://chjax4mclac7v" path="res://test/node_3d.tscn" id="2_pw5lg"]
-[ext_resource type="Environment" uid="uid://2y6cpv3jv0dq" path="res://main_game.tres" id="3_7nucg"]
-[ext_resource type="Script" path="res://scripts/coreutils/camera_3d_controller/camera_3d_controller.gd" id="3_hi6t1"]
-[ext_resource type="Script" path="res://scripts/coreutils/follow_2d_to_3d/follow_2d_to_3d.gd" id="4_75k6v"]
-[ext_resource type="PackedScene" uid="uid://65lu22pamprs" path="res://scripts/components/players/player.tscn" id="5_a6e1y"]
-[ext_resource type="Texture2D" uid="uid://bqfwc8rfk50p7" path="res://icon.svg" id="5_lj7vt"]
-[ext_resource type="PackedScene" uid="uid://caexqot86tvby" path="res://scripts/components/air_particles/air_particles.tscn" id="6_tvgfn"]
-[ext_resource type="AudioStream" uid="uid://vmxrk7g2lnoo" path="res://resources/audio/music/003_Vaporware.mp3" id="8_f2q3t"]
-[ext_resource type="Script" path="res://scripts/coreutils/deathzone/deathzone.gd" id="10_34r40"]
+[ext_resource type="Script" path="res://scenes/level/2d/level.gd" id="1_aj7tn"]
+[ext_resource type="PackedScene" uid="uid://bti4t7tjophww" path="res://scenes/level/3d/level3d.tscn" id="2_dcutv"]
+[ext_resource type="Script" path="res://scripts/coreutils/viewport_controller/viewport_controller.gd" id="3_6j8ac"]
+[ext_resource type="Script" path="res://scripts/coreutils/camera_3d_controller/camera_3d_controller.gd" id="4_hwujb"]
+[ext_resource type="Script" path="res://scripts/coreutils/follow_2d_to_3d/follow_2d_to_3d.gd" id="5_cext7"]
+[ext_resource type="PackedScene" uid="uid://65lu22pamprs" path="res://scripts/components/players/player.tscn" id="6_bkh8p"]
+[ext_resource type="Texture2D" uid="uid://bqfwc8rfk50p7" path="res://icon.svg" id="7_ndsip"]
+[ext_resource type="Script" path="res://scripts/components/camera/camera.gd" id="8_mwmkk"]
+[ext_resource type="PackedScene" uid="uid://caexqot86tvby" path="res://scripts/components/air_particles/air_particles.tscn" id="9_gqlvu"]
+[ext_resource type="Script" path="res://scripts/coreutils/deathzone/deathzone.gd" id="10_7oed7"]
+[ext_resource type="Environment" uid="uid://2y6cpv3jv0dq" path="res://main_game.tres" id="11_22m7c"]
+[ext_resource type="AudioStream" uid="uid://vmxrk7g2lnoo" path="res://resources/audio/music/003_Vaporware.mp3" id="12_dk5ct"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jjhg3"]
 size = Vector2(32, 32)
@@ -19,19 +19,23 @@ size = Vector2(32, 32)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7mjc1"]
 size = Vector2(10000, 20)
 
-[node name="Node2D" type="Node2D"]
-script = ExtResource("1_1nb8i")
+[node name="Level" type="Node2D"]
+script = ExtResource("1_aj7tn")
+level_3d = ExtResource("2_dcutv")
 
 [node name="Scripts" type="Node" parent="."]
 
 [node name="ViewportController" type="Node" parent="Scripts"]
-script = ExtResource("2_obpec")
+script = ExtResource("3_6j8ac")
 
 [node name="Camera3DController" type="Node" parent="Scripts"]
-script = ExtResource("3_hi6t1")
+script = ExtResource("4_hwujb")
 
 [node name="Follow2DTo3D" type="Node" parent="Scripts"]
-script = ExtResource("4_75k6v")
+script = ExtResource("5_cext7")
+
+[node name="Timers" type="Node" parent="Scripts"]
+unique_name_in_owner = true
 
 [node name="CLBack" type="CanvasLayer" parent="."]
 layer = -1
@@ -43,11 +47,22 @@ offset_bottom = 575.0
 color = Color(0, 0, 0, 1)
 metadata/_edit_lock_ = true
 
+[node name="Camera" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="Camera"]
+script = ExtResource("8_mwmkk")
+
+[node name="AirParticles" parent="Camera/Camera2D" instance=ExtResource("9_gqlvu")]
+position = Vector2(0, -1)
+
+[node name="Polygons" type="Node2D" parent="."]
+unique_name_in_owner = true
+
 [node name="Entity" type="Node2D" parent="."]
 
 [node name="Player" type="Node2D" parent="Entity"]
 
-[node name="Player" parent="Entity/Player" instance=ExtResource("5_a6e1y")]
+[node name="Player" parent="Entity/Player" instance=ExtResource("6_bkh8p")]
 position = Vector2(0, -1)
 
 [node name="Enemy" type="Node2D" parent="Entity"]
@@ -60,18 +75,10 @@ collision_mask = 5
 [node name="Sprite2D" type="Sprite2D" parent="Entity/Enemy/RigidBody2D"]
 position = Vector2(-4.76837e-06, -1.19209e-06)
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("5_lj7vt")
+texture = ExtResource("7_ndsip")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entity/Enemy/RigidBody2D"]
 shape = SubResource("RectangleShape2D_jjhg3")
-
-[node name="Camera" type="Node2D" parent="Entity"]
-
-[node name="Camera2D" type="Camera2D" parent="Entity/Camera"]
-script = ExtResource("2_gafeg")
-
-[node name="AirParticles" parent="Entity/Camera/Camera2D" instance=ExtResource("6_tvgfn")]
-position = Vector2(0, -1)
 
 [node name="CLFront" type="CanvasLayer" parent="."]
 
@@ -87,12 +94,10 @@ size_flags_vertical = 3
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="CLFront/SubViewportContainer"]
+unique_name_in_owner = true
 handle_input_locally = false
 size = Vector2i(222, 156)
 render_target_update_mode = 4
-
-[node name="Node3D" parent="CLFront/SubViewportContainer/SubViewport" instance=ExtResource("2_pw5lg")]
-unique_name_in_owner = true
 
 [node name="FPS" type="Label" parent="CLFront"]
 unique_name_in_owner = true
@@ -113,14 +118,14 @@ text = "FPS:"
 position = Vector2(560, 624)
 collision_layer = 0
 collision_mask = 4
-script = ExtResource("10_34r40")
+script = ExtResource("10_7oed7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Deathzone"]
 shape = SubResource("RectangleShape2D_7mjc1")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource("3_7nucg")
+environment = ExtResource("11_22m7c")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_f2q3t")
+stream = ExtResource("12_dk5ct")
 volume_db = -6.0

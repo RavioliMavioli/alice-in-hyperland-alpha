@@ -141,6 +141,10 @@ func _toggle_grass(grass: Sprite2D, enable: bool) -> void:
 	grass.set_physics_process.call_deferred(enable)
 	
 func _clean_nulls(arr: Array) -> void:
+	if arr.is_empty():
+		return
 	for i in range(arr.size()):
+		if i >= arr.size():
+			return
 		if arr[i] == null:
 			arr.remove_at(i)

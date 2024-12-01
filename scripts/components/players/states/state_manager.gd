@@ -39,6 +39,7 @@ func _physics_process(_delta: float) -> void:
 		else:
 			current_flip = FLIP.LEFT
 			sprite_node.flip_h = true
+	$Velocity.text = str(player.velocity)
 ##################################################################################
 
 func get_current_state_id():

@@ -1,8 +1,13 @@
 extends Node
 
-@onready var chara: MeshInstance3D = %Node3D.get_node("%Character")
+var chara: MeshInstance3D:
+	get: return Level3D.instance.projector
 
 func _physics_process(_delta: float) -> void:
+	if true:
+		return
+	if chara == null:
+		return
 	if Player.instance == null or Hyperplane.instance == null:
 		return
 	chara.global_position = Vector3(

@@ -35,6 +35,9 @@ func init_polygon2D(parent: Object) -> void:
 		parent.add_child(polygon)
 		polygon.global_position = Vector2(mesh.global_position.x, -mesh.global_position.y) * Constants.METER_TO_PIXEL
 
+func draw_init_polygon() -> void:
+	_clock_function.call_deferred(true)
+
 func start_polygon_update() -> void:
 	if clock != null:
 		clock.start()
@@ -49,7 +52,6 @@ func _clock_function(include_static := false) -> void:
 	for d in TriangleData.queue_data:
 		var mesh: MeshPair = d["mesh_pair"]
 		var triangles: Array[PackedVector3Array] = d["triangles"]
-		var c_triangles: Array[PackedVector3Array] = d["children"]["triangles"]
 		var thread: Thread = d["thread"]
 		
 		if thread == null or triangles == null or mesh == null:
@@ -59,33 +61,30 @@ func _clock_function(include_static := false) -> void:
 				thread.wait_to_finish()
 			thread.start(func():
 				Thread.set_thread_safety_checks_enabled(false)
-				_update_vertices(triangles, mesh, c_triangles, include_static)
+				_update_vertices(triangles, mesh, include_static)
 			)
 		else:
-			_update_vertices(triangles, mesh, c_triangles, include_static)
+			_update_vertices(triangles, mesh, include_static)
 
 func _sort_clockwise(arr: PackedVector2Array) -> PackedVector2Array:
 	## USE THIS IF GRASS DOESN'T SPAWN
 	## Legacy sorter, Geometry2D.convex_hull will take care of...
-	## ...sorting clockwise at much faster rate
+	## ...clockwise sorting at much faster rate
 	var center := _centeroid(arr)
 	var arr_dict := []
 	var fixed_arr := []
 	for v in arr:
 		var angle = center.angle_to_point(v)
-		#if center.distance_to(v) > max_distance:
-		#	return []
 		arr_dict.append({"angle":angle, "vector": v})
 	arr_dict.sort_custom(_sort_atan)
 	for v in arr_dict:
 		fixed_arr.append(v["vector"])
 	return fixed_arr
 
-func _update_vertices(sorted_triangles: Array[PackedVector3Array], mesh_pair: MeshPair, c_triangles: Array[PackedVector3Array], include_static := false) -> void:
+func _update_vertices(sorted_triangles: Array[PackedVector3Array], mesh_pair: MeshPair, include_static := false) -> void:
 	if !mesh_pair.mark_static or include_static:
 		var srt_tri := _calculate_points_from_triangle(sorted_triangles, mesh_pair.use_legacy_polygon_sorter)
-		var srt_chld := _calculate_points_from_triangle(c_triangles, mesh_pair.use_legacy_polygon_sorter)
-		mesh_pair.polygon_pair.update_vertices.call_deferred(srt_tri, srt_chld)
+		mesh_pair.polygon_pair.update_vertices.call_deferred(srt_tri)
 
 func _calculate_points_from_triangle(sorted_triangles: Array[PackedVector3Array], use_legacy: bool = false) -> PackedVector2Array:
 	var intersected_triangles := _intersected_triangles(sorted_triangles, hyperplane)
@@ -109,7 +108,7 @@ func _intersected_triangles(triangles: Array[PackedVector3Array], plane: Hyperpl
 		if z_min <= plane_z and z_max >= plane_z:
 			tmp_tris.append(t)
 	return tmp_tris
-
+	
 func _intersection_points(triangles: Array[PackedVector3Array], plane: Hyperplane) -> PackedVector2Array:
 	var tmp_vec2: PackedVector2Array
 	var vec: Vector3

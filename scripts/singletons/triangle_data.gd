@@ -6,11 +6,7 @@ var queue_data := [{
 	"mesh_pair": null,
 	"triangles": null,
 	"polygon_pair": null,
-	"thread": null,
-	"children":{
-		"mesh_pair": null,
-		"triangles": null
-	}
+	"thread": null
 }]
 
 func reset_data() -> void:
@@ -29,26 +25,13 @@ func add_mesh(mesh: MeshPair) -> void:
 	var triangles := _triangles_from_mesh(mesh)
 	var sorted_triangles := _sort_triangle_by_z(triangles)
 	var polygon_pair: PolygonPair = polygon_scene.instantiate()
-	var c_mesh: MeshPair
-	var c_triangles: Array[PackedVector3Array]
-	var c_sorted_triangles: Array[PackedVector3Array]
 	mesh.polygon_pair = polygon_pair
-	
-	if mesh.get_children().size() != 0 and mesh.get_child(0) is MeshPair:
-		c_mesh = mesh.get_child(0)
-		c_triangles = _triangles_from_mesh(c_mesh, c_mesh.global_position - mesh.global_position)
-		c_sorted_triangles = _sort_triangle_by_z(c_triangles)
-		polygon_pair.has_children = true
 	
 	queue_data.append({
 		"mesh_pair": mesh,
 		"triangles": sorted_triangles,
 		"polygon_pair": polygon_pair,
-		"thread": Thread.new(),
-		"children":{
-			"mesh_pair": c_mesh,
-			"triangles": c_sorted_triangles,
-		}
+		"thread": Thread.new()
 	})
 
 func _triangles_from_mesh(mesh: MeshPair, offset := Vector3.ZERO) -> Array[PackedVector3Array]:

@@ -34,8 +34,8 @@ func _camera_physics(delta: float) -> void:
 	var player_pos: Vector2 = Player.player_pos
 	var dir = Input.get_axis("A", "D")
 	if dir != 0:
-		#if Player.enable_input == false: return
-		target_offset_x = dir * 75
+		if !Player.enable_input: target_offset_x = 0.0
+		else: target_offset_x = dir * 75
 	offset_x = lerp(offset_x, target_offset_x, delta * 1.5)
 	self.global_position.x = lerp(self.global_position.x, player_pos.x + offset_x, delta * 3.5)
 	self.global_position.y = lerp(self.global_position.y, player_pos.y + VERTICAL_OFFSET, delta * 1.0)

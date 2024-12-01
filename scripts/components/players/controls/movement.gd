@@ -1,6 +1,6 @@
 class_name PlayerMovementControls extends Node2D
 
-@export var running_speed := 200.0
+@export var running_speed := 180.0
 
 var player: Player:
 	get: return owner
