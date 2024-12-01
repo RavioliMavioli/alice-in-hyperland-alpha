@@ -1,7 +1,5 @@
 extends Node
 
-signal all_mesh_ready
-
 var queue_combiner := [{
 		"parent": null,
 		"csg_pair": null,
@@ -55,5 +53,5 @@ func generate_mesh_instances() -> void:
 		mesh_instance.line_profile = csg.line_profile
 		q["csg_pair"] = null
 		csg.queue_free.call_deferred()
-	all_mesh_ready.emit()
+
 	clear_all_data()

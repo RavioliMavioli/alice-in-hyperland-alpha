@@ -14,7 +14,7 @@ var _is_fps: bool:
 	get: return get_setting("is_fps", false)
 	set(val): set_setting("is_fps", val)
 var _is_fullscreen: bool:
-	get: return get_setting("is_fullscreen", false)
+	get: return get_setting("is_fullscreen", true)
 	set(val): set_setting("is_fullscreen", val)
 var _is_vsync: bool:
 	get: return get_setting("is_vsync", true)

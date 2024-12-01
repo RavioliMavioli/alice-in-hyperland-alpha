@@ -19,7 +19,7 @@ func _init_meshes() -> void:
 	MeshGenerator.append_all_csg(%Dynamic)
 	MeshGenerator.append_all_csg(%Static)
 	MeshGenerator.generate_mesh_instances()
-	#await MeshGenerator.all_mesh_ready
+
 	TriangleData.load_all_meshes(meshes)
 	for c in %Static.get_children():
 		if c is MeshPair:

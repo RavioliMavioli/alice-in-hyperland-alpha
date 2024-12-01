@@ -32,7 +32,7 @@ func _physics_process(_delta: float) -> void:
 		current_state = STATE.JUMP
 		if player.velocity.y > 0:
 			current_state = STATE.FALL
-	if movement_controls.direction != 0:
+	if movement_controls.direction != 0 and !player.is_on_wall():
 		if player.velocity.x >= 0:
 			current_flip = FLIP.RIGHT
 			sprite_node.flip_h = false

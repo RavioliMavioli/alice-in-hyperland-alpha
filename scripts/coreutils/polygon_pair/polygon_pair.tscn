@@ -1,6 +1,5 @@
-[gd_scene load_steps=13 format=3 uid="uid://bdd1glmdbfmuv"]
+[gd_scene load_steps=12 format=3 uid="uid://bdd1glmdbfmuv"]
 
-[ext_resource type="Texture2D" uid="uid://co5e0jatc68vp" path="res://resources/asd.png" id="1_dsuj8"]
 [ext_resource type="Script" path="res://scripts/coreutils/polygon_pair/polygon_pair.gd" id="1_s4p2h"]
 [ext_resource type="Texture2D" uid="uid://dkq5t3khtyvj2" path="res://resources/images/sprites/environments/grounds/gnd1.png" id="2_54ujo"]
 [ext_resource type="Shader" path="res://shaders/vfx/grass/grass.gdshader" id="2_j0txt"]
@@ -17,8 +16,7 @@
 texture_filter = 1
 texture_repeat = 2
 scale = Vector2(1.00209, 1)
-color = Color(0.31802, 0.31802, 0.31802, 1)
-texture = ExtResource("1_dsuj8")
+color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-79.8332, -56, -383.199, -48, -127.733, 64, 127.733, 64, 127.733, -64)
 script = ExtResource("1_s4p2h")
 

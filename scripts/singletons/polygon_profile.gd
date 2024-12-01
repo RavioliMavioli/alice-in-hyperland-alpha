@@ -10,7 +10,7 @@ var profiles := {
 	"dark_ground": {
 		"polygon_texture": load("res://resources/asd.png"),
 		"polygon_color": Color.WHITE,
-		"disable_shadow": false,
+		"disable_shadow": true,
 		"disable_line": false,
 		"line_width": 16.0,
 		"line_texture": load("res://resources/images/sprites/environments/grounds/gnd1.png"),
